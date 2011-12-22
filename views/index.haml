@@ -4,7 +4,11 @@
       %h4 Select plugins you'd like to concatenate (and minify).
       %fieldset.control-group
         .controls
-          .control-list
+          %a.select{href: "#"} Select all
+          \/
+          %a.deselect{href: "#"} Deselect all
+
+          .control-list.plugins
             - for plugin in available
               %label.checkbox
                 %input{type: "checkbox", name: "files[]", value: plugin}
@@ -25,3 +29,11 @@
               %span Minify
   %fieldset.form-actions
     %input{type: "submit", class: "btn primary large", value: "Minify!"}
+
+:javascript
+  $('.select').click(function(){
+    $('.plugins input').attr('checked',true);
+  });
+  $('.deselect').click(function(){
+    $('.plugins input').removeAttr('checked');
+  });
