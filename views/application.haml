@@ -1,0 +1,12 @@
+!!! 5
+%html
+  %head
+    %meta{charset: "utf-8"}
+    %title Bootstrapr
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}
+    %link{href: stylesheet_path("bootstrap"),media: 'screen', rel: 'stylesheet', type: 'text/css'}
+%body
+  .container
+    .page-header
+      %h1 Bootstrapr
+    = yield
