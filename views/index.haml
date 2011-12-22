@@ -1,1 +1,23 @@
-Hello world
+%form.vertical-form{action: "/pack"}
+  .row
+    .span8
+      %h4 Select plugins you'd like to minify
+      %fieldset.control-group
+        .controls
+          .control-list
+            - for plugin in available
+              %label.checkbox
+                %input{type: "checkbox", name: "files[]", value: plugin}
+                = "bootstrap-#{plugin}.js"
+    .span4
+      %fieldset.control-group
+        %label.control-label
+          Settings
+        .controls
+          .control-list
+            %label.checkbox{for: "comments"}
+              %input{type: "hidden", name: "comments", value: "1"}
+              %input{type: "checkbox", name: "comments", id: "comments", value: "0"}
+              %span Remove comments
+  %fieldset.form-actions
+    %input{type: "submit", class: "btn primary", value: "Minify!"}
