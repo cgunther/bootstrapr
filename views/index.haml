@@ -1,7 +1,7 @@
 %form.vertical-form{action: "/pack"}
   .row
     .span8
-      %h4 Select plugins you'd like to minify
+      %h4 Select plugins you'd like to concatenate and/or minify.
       %fieldset.control-group
         .controls
           .control-list
@@ -19,5 +19,9 @@
               %input{type: "hidden", name: "comments", value: "1"}
               %input{type: "checkbox", name: "comments", id: "comments", value: "0"}
               %span Remove comments
+            %label.checkbox{for: "minify"}
+              %input{type: "hidden", name: "minify", value: "01"}
+              %input{type: "checkbox", name: "minify", id: "minify", value: "1"}
+              %span Minify
   %fieldset.form-actions
-    %input{type: "submit", class: "btn primary", value: "Minify!"}
+    %input{type: "submit", class: "btn primary large", value: "Minify!"}

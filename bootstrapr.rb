@@ -8,15 +8,15 @@ class Bootstrapr < Sinatra::Base
   end
 
   get '/pack' do
-    compress = params[:compress] == "1"
+    minify = params[:minify] == "1"
     comments = params[:comments] == "1"
-    headers "Content-Disposition" => "attachment; filename=bootstrap.#{"min." if compress}js"
+    headers "Content-Disposition" => "attachment; filename=bootstrap.#{"min." if minify}js"
     content_type "text/javascript"
     params[:files] = params[:files].split(",") if params[:files].class.name == "String"
     files = params[:files] ? params[:files].collect{|f| f if available.include?(f)}.compact : []
 
     content = []
-    ugl = Uglifier.new(copyright: comments)
+    ugl = Uglifier.new(copyright: comments, mangle: minify, squeeze: minify, dead_code: minify, seqs: minify, beautify: !minify)
     for file in files
       content << ugl.compile(File.open(File.join(settings.root,"src","bootstrap-#{file}.js")))
     end
