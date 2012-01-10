@@ -2,25 +2,25 @@ require 'net/https'
 
 class Bootstrapr < Sinatra::Base
   set :haml, :format => :html5, :layout => :application
-  available = %w{alert button carousel collapse dropdown modal popover scrollspy tab transition twipsy}
 
   # Actions
   get '/' do
-    haml :index, :locals => {available: available}
+    haml :index
   end
 
   get '/pack' do
+    ref = params[:ref] || "master"
     minify = params[:minify] == "1"
     comments = params[:comments] == "1"
     headers "Content-Disposition" => "attachment; filename=bootstrap.#{"min." if minify}js"
     content_type "text/javascript"
     params[:files] = params[:files].split(",") if params[:files].class.name == "String"
-    files = params[:files] ? params[:files].collect{|f| f if available.include?(f)}.compact : []
+    files = params[:files] || []
 
     content = []
     ugl = Uglifier.new(copyright: comments, mangle: minify, squeeze: minify, dead_code: minify, seqs: minify, beautify: !minify)
     for file in files
-      uri = URI.parse("https://raw.github.com/twitter/bootstrap/2.0-wip/js/bootstrap-#{file}.js")
+      uri = URI.parse("https://raw.github.com/twitter/bootstrap/#{ref}/js/bootstrap-#{file}.js")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE

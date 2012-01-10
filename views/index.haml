@@ -4,15 +4,62 @@
       %h4 Select plugins you'd like to concatenate (and minify).
       %fieldset.control-group
         .controls
+          %label
+            ="Version"
+            %select#ref{name: 'ref'}
+              %option{data: {version: 'v1-3-0'}} v1.3.0
+              %option{data: {version: 'v1-4-0'}} v1.4.0
+              %option{data: {version: '2-0-wip'}, selected: 'true'} 2.0-wip
           %a.select{href: "#"} Select all
           \/
           %a.deselect{href: "#"} Deselect all
 
           .control-list.plugins
-            - for plugin in available
-              %label.checkbox
-                %input{type: "checkbox", name: "files[]", value: plugin}
-                = "bootstrap-#{plugin}.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'alerts', class: 'v1-3-0 v1-4-0'}
+              ="bootstrap-alerts.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'alert', class: '2-0-wip'}
+              ="bootstrap-alerts.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'buttons', class: 'v1-4-0'}
+              ="bootstrap-buttons.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'button', class: '2-0-wip'}
+              ="bootstrap-button.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'carousel', class: '2-0-wip'}
+              ="bootstrap-carousel.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'collapse', class: '2-0-wip'}
+              ="bootstrap-collapse.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'dropdown', class: 'v1-3-0 v1-4-0 2-0-wip'}
+              ="bootstrap-dropdown.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'modal', class: 'v1-3-0 v1-4-0 2-0-wip'}
+              ="bootstrap-modal.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'popover', class: 'v1-3-0 v1-4-0 2-0-wip'}
+              ="bootstrap-popover.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'scrollspy', class: 'v1-3-0 v1-4-0 2-0-wip'}
+              ="bootstrap-scrollspy.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'tabs', class: 'v1-3-0 v1-4-0'}
+              ="bootstrap-tabs.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'tab', class: '2-0-wip'}
+              ="bootstrap-tab.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'transition', class: '2-0-wip'}
+              ="bootstrap-transition.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'twipsy', class: 'v1-3-0 v1-4-0 2-0-wip'}
+              ="bootstrap-twipsy.js"
+            %label.checkbox
+              %input{type: "checkbox", name: "files[]", value: 'typeahead', class: '2-0-wip'}
+              ="bootstrap-typeahead.js"
     .span4
       %fieldset.control-group
         %label.control-label
@@ -32,8 +79,12 @@
 
 :javascript
   $('.select').click(function(){
-    $('.plugins input').attr('checked',true);
+    $('.plugins input:visible').attr('checked',true);
   });
   $('.deselect').click(function(){
-    $('.plugins input').removeAttr('checked');
+    $('.plugins input:visible').removeAttr('checked');
   });
+  $('#ref').change(function() {
+    var version = $(this).find('option:selected').data('version');
+    $('.plugins label').hide().has('(input.' + version).show().end().find('input').prop('checked', false);
+  }).change();
