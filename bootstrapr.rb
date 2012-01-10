@@ -1,3 +1,5 @@
+require 'net/https'
+
 class Bootstrapr < Sinatra::Base
   set :haml, :format => :html5, :layout => :application
   available = %w{alert button carousel collapse dropdown modal popover scrollspy tab transition twipsy}
@@ -18,7 +20,13 @@ class Bootstrapr < Sinatra::Base
     content = []
     ugl = Uglifier.new(copyright: comments, mangle: minify, squeeze: minify, dead_code: minify, seqs: minify, beautify: !minify)
     for file in files
-      content << ugl.compile(File.open(File.join(settings.root,"src","bootstrap-#{file}.js")))
+      uri = URI.parse("https://raw.github.com/twitter/bootstrap/2.0-wip/js/bootstrap-#{file}.js")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Get.new(uri.request_uri)
+      response = http.request(request)
+      content << ugl.compile(response.body)
     end
     content.join("\n")
   end
